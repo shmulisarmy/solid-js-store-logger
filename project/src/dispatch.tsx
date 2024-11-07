@@ -1,6 +1,8 @@
-import { createStore } from "solid-js/store";
+import { User_Type } from "./App";
+// import { users, setUsers } from "./users";
+import { my_store } from "./my_store";
 
-export const [users, setUsers] = createStore([
+export const [users, dispatch, undo, redo, actions, upto] = my_store<User_Type[]>([
   {
     id: 1,
     name: 'John Doe',
