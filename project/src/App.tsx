@@ -8,6 +8,7 @@ import styles from "./App.module.css";
 // import { users, setUsers } from "./users";
 import { setUsers,  users, user_store_class } from "./dispatch";
 import { Action_logger } from "./action_logger/extension_pack";
+import { Form } from "./reusable_components/Form";
 
 export type User_Type = {
   name: string;
@@ -54,32 +55,6 @@ function ErrorC() {
 }
 
 
-function Form({store, cb}: {store: any, cb: Function}) {
-  if (!(store instanceof Object) || store instanceof Array) {
-    throw new Error("store is not an object");
-  }
-  console.log("in form component", store);
-  return (
-    <form>
-      <For each={Object.keys(store)}>
-        {(field) => {
-          let input_ref: HTMLInputElement | undefined;
-          return(
-          <>
-          <label for={field}>{field}</label>
-          <input ref={input_ref} oninput={() => store[field] = input_ref!.value} type="text" />
-          <br />
-          </>
-        )}
-      }
-      </For>
-    </form>
-  )
-}
-
-
-
-
 function User({ user }: { user: User_Type }) {
   return (
     <div class={styles.user}>
@@ -101,7 +76,9 @@ const App: Component = () => {
     <div class="main-person">
       <p>{main_person.data.name}</p>
       <p>{main_person.data.email}</p>
-      <Form store={main_person.data} />
+      <Form store={main_person.data}>
+        <button onClick={(e) => {e.preventDefault(); alert(main_person.data.name)}}>brodcast</button>
+      </Form>
     </div>
 
     <div class={styles.App}>
