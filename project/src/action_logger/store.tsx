@@ -1,15 +1,10 @@
 import { createSignal } from "solid-js";
 import { createStore } from "solid-js/store";
-import { User_Type } from "./App";
+import type { Setter, Accessor } from "solid-js";
 import { a } from "vite/dist/node/types.d-aGj9QkWt";
+import { Action } from "./Action";
 export type Signal<T> = ReturnType<typeof createSignal<T>>;
 const [signalValue, setSignalValue] = createSignal<any>(null);
-
-export type Action = {
-  indexers: any[];
-  oldState: any;
-  newState: any;
-};
 
 export class MyStore<T extends object> {
   state: T;
@@ -25,7 +20,9 @@ export class MyStore<T extends object> {
     [this.upto, this.setUpto] = createSignal(0);
   }
 
-  dispatch(indexers: any[], newState: any) {
+  dispatch(...indexers_and_newState: any[]) {
+    const newState = indexers_and_newState.pop();
+    const indexers: number|string[] = indexers_and_newState;
     let oldState: any = this.state;
     for (const indexer of indexers) {
       oldState = oldState[indexer];
@@ -46,27 +43,21 @@ export class MyStore<T extends object> {
 
     this.setActions(actions_copy); // Update the actions store
 
-    this.my_state_setter<User_Type[]>(indexers, newState);
+    this.my_state_setter<T>(indexers, newState);
   }
 
   private my_state_setter<T>(
     indexers: any[],
     newState: any
   ) {
-    if (indexers.length === 1) {
-      this.setState(indexers[0], newState);
-    } else if (indexers.length === 2) {
-      this.setState(indexers[0], indexers[1], newState);
-    } else if (indexers.length === 3) {
-      this.setState(indexers[0], indexers[1], indexers[2], newState);
-    } else if (indexers.length === 4) {
-      this.setState(indexers[0], indexers[1], indexers[2], indexers[3], newState);
-    } else if (indexers.length === 5) {
-      this.setState(indexers[0], indexers[1], indexers[2], indexers[3], indexers[4], newState);
-    }
+
+    this.setState(...indexers, newState);
   }
 
   undo() {
+     if (!(this instanceof MyStore)) {
+       throw new Error("'this' is not an instance of MyStore (when putting it in a onclick handler, make sure to bind it to this)");
+     }
     if (this.upto() > 0) {
       this.setUpto(prev => prev - 1);
     }
@@ -81,6 +72,9 @@ export class MyStore<T extends object> {
   }
 
   redo() {
+    if (!(this instanceof MyStore)) {
+      throw new Error("'this' is not an instance of MyStore (when putting it in a onclick handler, make sure to bind it to this)");
+    }
     if (this.upto() < this.actions().length) {
       this.setUpto(prev => prev + 1);
     }
@@ -96,8 +90,8 @@ export class MyStore<T extends object> {
 }
 
 
-export function my_store<T extends object>(initialState: T) {
+export function my_store<T extends object>(initialState: T): [T, (a: any) => void, MyStore<T>] {
   const store = new MyStore(initialState);
 
-  return [store.state, store.dispatch.bind(store), store.undo.bind(store), store.redo.bind(store), store.actions, store.upto, store];
+  return [store.state, store.dispatch.bind(store), store];
 }
