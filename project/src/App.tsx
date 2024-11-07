@@ -5,7 +5,8 @@ import type { Setter } from "solid-js";
 import logo from "./logo.svg";
 import styles from "./App.module.css";
 // import { users, setUsers } from "./users";
-import { dispatch, actions, upto, users, undo, redo } from "./dispatch";
+import { dispatch, actions, upto, users, undo, redo, user_store_class } from "./dispatch";
+import {Action_list} from "./my_store_extension";
 
 export type User_Type = {
   name: string;
@@ -14,19 +15,7 @@ export type User_Type = {
 };
 
 
-function Action_list() {
-  return (
-    <div>
-      {actions().map((action, index) => (
-        <div class={`${styles.action} ${index >= upto() ? styles.undone : ""}`}>
-          <p>
-            {action.oldState} {" => "} {action.newState}
-          </p>
-        </div>
-      ))}
-    </div>
-  );
-}
+
 
 
 function Field_changer({ index, field }: { index: number; field: string }) {
@@ -66,7 +55,7 @@ const App: Component = () => {
     <div class={styles.App}>
       <button onclick={undo}>Undo</button>
       <button onclick={redo}>Redo</button>
-      <Action_list />
+      <Action_list store_class={user_store_class} />
       <For each={users}>{(user) => <User user={user} />}</For>
     </div>
   );

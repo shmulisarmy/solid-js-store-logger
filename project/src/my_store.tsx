@@ -99,5 +99,5 @@ export class MyStore<T extends object> {
 export function my_store<T extends object>(initialState: T) {
   const store = new MyStore(initialState);
 
-  return [store.state, store.dispatch.bind(store), store.undo.bind(store), store.redo.bind(store), store.actions, store.upto];
+  return [store.state, store.dispatch.bind(store), store.undo.bind(store), store.redo.bind(store), store.actions, store.upto, store];
 }

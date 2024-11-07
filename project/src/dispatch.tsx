@@ -2,7 +2,7 @@ import { User_Type } from "./App";
 // import { users, setUsers } from "./users";
 import { my_store } from "./my_store";
 
-export const [users, dispatch, undo, redo, actions, upto] = my_store<User_Type[]>([
+export const [users, dispatch, undo, redo, actions, upto, user_store_class] = my_store<User_Type[]>([
   {
     id: 1,
     name: 'John Doe',
