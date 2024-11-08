@@ -7,12 +7,12 @@ import {JSX} from "solid-js/jsx-runtime";
 import logo from "./logo.svg";
 import styles from "./App.module.css";
 // import { users, setUsers } from "./users";
-import { setUsers,  users, user_store_class } from "./dispatch";
+import { setUsers,  users, user_store_class } from "./user_data";
 import { Action_logger } from "./action_logger/extension_pack";
 import { Form } from "./reusable_components/Form";
 import { useState, React_component, useEffect } from "./useState";
 import Tabs  from "./reusable_components/tabs";
-
+import Table from "./reusable_components/table";
 export type User_Type = {
   name: string;
   email: string;
@@ -172,6 +172,7 @@ const App: Component = () => {
         <Action_logger store_class={user_store_class} />
         <For each={users}>{(user) => <User user={user} />}</For>
       </div>
+      <Table store={users} setter={setUsers}></Table>
     </>
   );
 };

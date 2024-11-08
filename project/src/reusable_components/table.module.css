@@ -1,0 +1,41 @@
+/* Root styles for light mode */
+
+  
+  /* Table.table styles */
+  table.table {
+    border-collapse: collapse;
+    background-color: var(--background-color);
+    color: var(--color);
+    border-color: var(--border-color);
+    transition: background-color 1s, color 1s;
+  
+    th, td {
+      padding: 14px;
+    }
+  
+    /* Table.table Header */
+  }
+  
+  table.table th {
+    background: linear-gradient(135deg, lightgreen, green);
+    color: var(--color);
+    border: solid 1px var(--border-color);
+  }
+  
+  /* Hover effect on rows */
+  table.table tr:hover {
+    background-color: var(--color);
+    color: var(--background-color);
+  }
+  
+  /* Table.table cells */
+  table.table th, table.table td {
+    border: solid 1px var(--border-color);
+  }
+  
+  /* Hover effect on cells */
+  table.table td:hover {
+    cursor: pointer;
+    border-color: var(--primary-color);
+  }
+  
