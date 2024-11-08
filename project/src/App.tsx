@@ -113,31 +113,65 @@ function Counter({name, email} : any) {
 const App: Component = () => {
   return (
     <>
-    <Tabs style={{color: "red"}} options={items}>
-      {
-        item => (<div>
-          <h2>{item.name}</h2>
-          <p>Price: ${item.price}</p>
-          <p>Quantity: {item.quantity}</p>
-        </div>)
-      }
-    </Tabs>
-    <React_component component={Counter} args={{name: "shmuli", email: "shmulikeller@example.com"}}/>
-    <React_component component={Counter} args={{}}/>
-    <Letter_animator Class={styles.letter_animator} letters="wellcome back to solid, this is a test" speed={80}/>
-    <div class="main-person">
-      <p>{main_person.data.name}</p>
-      <p>{main_person.data.email}</p>
-      <Form Class={styles.custom_form} data={main_person.data}>
-        <button onClick={(e) => {e.preventDefault(); alert(main_person.data.name)}}>brodcast</button>
-      </Form>
-    </div>
+      <Tabs options={items}>
+        {(item) => (
+          <>
+          <div style={{display: "flex", "justify-content": "space-around"}}>
 
-    <div class={styles.App}>
-      
-      <Action_logger store_class={user_store_class} />
-      <For each={users}>{(user) => <User user={user} />}</For>
-    </div>
+          <div>
+            <h2>{item.name}</h2>
+            <p>Price: ${item.price}</p>
+            <p>Quantity: {item.quantity}</p>
+          </div>
+         <div>
+           <h2>{item.name}</h2>
+           <p>Price: ${item.price}</p>
+           <p>Quantity: {item.quantity}</p>
+         </div>
+         <div>
+           <h2>{item.name}</h2>
+           <p>Price: ${item.price}</p>
+           <p>Quantity: {item.quantity}</p>
+         </div>
+         <div>
+           <h2>{item.name}</h2>
+           <p>Price: ${item.price}</p>
+           <p>Quantity: {item.quantity}</p>
+         </div>
+          </div>
+          </>
+
+        )}
+      </Tabs>
+      <React_component
+        component={Counter}
+        args={{ name: "shmuli", email: "shmulikeller@example.com" }}
+      />
+      <React_component component={Counter} args={{}} />
+      <Letter_animator
+        Class={styles.letter_animator}
+        letters="wellcome back to solid, this is a test"
+        speed={80}
+      />
+      <div class="main-person">
+        <p>{main_person.data.name}</p>
+        <p>{main_person.data.email}</p>
+        <Form Class={styles.custom_form} data={main_person.data}>
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              alert(main_person.data.name);
+            }}
+          >
+            brodcast
+          </button>
+        </Form>
+      </div>
+
+      <div class={styles.App}>
+        <Action_logger store_class={user_store_class} />
+        <For each={users}>{(user) => <User user={user} />}</For>
+      </div>
     </>
   );
 };

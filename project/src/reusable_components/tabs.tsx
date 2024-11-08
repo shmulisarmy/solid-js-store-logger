@@ -1,28 +1,47 @@
 import { createSignal } from "solid-js";
-import styles from "./styles.module.css";
+import styles from "./tabs.module.css";
 import type { JSX } from "solid-js/jsx-runtime";
 
+export default function Tabs({
+  children,
+  options,
+  style,
+}: {
+  children: ({}: any) => JSX.Element;
+  options: any;
+  style?: any;
+}) {
+  const [selectedTabindex, setSelectedTabindex] = createSignal<number>(0);
 
-export default function Tabs({ children, options, style }: { children: ({}: any) => JSX.Element, options: any, style?: any }) {
-    const [selectedTab, setSelectedTab] = createSignal<string>(
-      Object.keys(options)[0]
-    );
-
-    function set_selected(selector: HTMLElement) {
-      const previously_selected = document.querySelector(`.${styles.selected}`);
-      if (previously_selected) {
-        previously_selected.classList.remove(styles.selected);
-      }
-      selector.classList.add(styles.selected);
-
-    }
-  
-    return (
-      <div id={styles.tabs} style={style}>
-        {Object.keys(options).map((key) => (
-          <button class={styles.selector} onClick={() => {setSelectedTab(key); set_selected(this)}}>{key}</button>
-        ))}
-        <div class={styles.tab_content}>{children(options[selectedTab()])}</div>
+  return (
+    <div id={styles.tabs} style={style}>
+      <div class={styles.selectors}>
+        {Object.keys(options).map((key, index) => {
+          let button_ref: HTMLButtonElement | undefined;
+          return (
+            <button
+              ref={button_ref}
+              class={`${styles.selector} ${
+                index === selectedTabindex() ? styles.selected : ""
+              }`}
+              onClick={() => setSelectedTabindex(index)}
+            >
+              {key}
+            </button>
+          );
+        })}
       </div>
-    );
-  }
+      <div class={styles.tab_content}>
+        {children(options[Object.keys(options)[selectedTabindex()]])}
+        <div class={styles.buttons}>
+          <button disabled={selectedTabindex() === 0} onclick={() => setSelectedTabindex((prev) => prev - 1)}>
+            {"<-"}
+          </button>
+          <button disabled={selectedTabindex() === Object.keys(options).length - 1} onclick={() => setSelectedTabindex((prev) => prev + 1)}>
+            {"->"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
