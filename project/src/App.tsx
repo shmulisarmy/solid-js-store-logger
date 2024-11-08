@@ -1,14 +1,17 @@
 import type { Component } from "solid-js";
-import { createEffect, For, Show, ErrorBoundary, createSelector,  } from "solid-js";
+import { For, Show, ErrorBoundary, createSelector, createSignal,  } from "solid-js";
 import type { Setter } from "solid-js";
 import {createMutable, createStore, unwrap } from "solid-js/store";
-
+import Letter_animator from "./reusable_components/letter_animator";
+import {JSX} from "solid-js/jsx-runtime";
 import logo from "./logo.svg";
 import styles from "./App.module.css";
 // import { users, setUsers } from "./users";
 import { setUsers,  users, user_store_class } from "./dispatch";
 import { Action_logger } from "./action_logger/extension_pack";
 import { Form } from "./reusable_components/Form";
+import { useState, React_component, useEffect } from "./useState";
+import Tabs  from "./reusable_components/tabs";
 
 export type User_Type = {
   name: string;
@@ -55,6 +58,19 @@ function ErrorC() {
 }
 
 
+const items = {
+  "Item 1": { id: 1, name: "Item 1", price: 10.99, quantity: 5 },
+  "Item 2": { id: 2, name: "Item 2", price: 5.99, quantity: 2 },
+  "Item 3": { id: 3, name: "Item 3", price: 7.99, quantity: 8 },
+}
+
+// function Item(item : any)  {
+//   return (
+    
+//   );
+// }
+
+
 function User({ user }: { user: User_Type }) {
   return (
     <div class={styles.user}>
@@ -65,18 +81,54 @@ function User({ user }: { user: User_Type }) {
 
     </div>
   );
-}XPathEvaluator
+}
+
+function Counter({name, email} : any) {
+
+  const [count, setCount] = useState(0);
+  const [othercount, setOtherCount] = useState(10);
+
+
+  useEffect(() => {
+    console.log("count is now: ", count);
+  }, [count]);
+
+
+
+
+
+  console.log("name: ", name, "email: ", email);
+  
+  return (
+    <>
+      <p>name: {name}</p>
+      <p>email: {email}</p>
+      <button onClick={() => {setCount(count + 1)}}>Count: {count}</button>
+      <button onClick={() => {setOtherCount(prev => prev + 1)}}>other: {othercount}</button>
+    </>
+  );
+}
+
 
 const App: Component = () => {
   return (
     <>
-    <ErrorBoundary fallback={(error) => <div style={{ color: "red", border: "1px solid orange", padding: "4px" }}>error: {error.message}</div>}>
-      <ErrorC/>
-    </ErrorBoundary>
+    <Tabs style={{color: "red"}} options={items}>
+      {
+        item => (<div>
+          <h2>{item.name}</h2>
+          <p>Price: ${item.price}</p>
+          <p>Quantity: {item.quantity}</p>
+        </div>)
+      }
+    </Tabs>
+    <React_component component={Counter} args={{name: "shmuli", email: "shmulikeller@example.com"}}/>
+    <React_component component={Counter} args={{}}/>
+    <Letter_animator Class={styles.letter_animator} letters="wellcome back to solid, this is a test" speed={80}/>
     <div class="main-person">
       <p>{main_person.data.name}</p>
       <p>{main_person.data.email}</p>
-      <Form store={main_person.data}>
+      <Form Class={styles.custom_form} data={main_person.data}>
         <button onClick={(e) => {e.preventDefault(); alert(main_person.data.name)}}>brodcast</button>
       </Form>
     </div>

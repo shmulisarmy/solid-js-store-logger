@@ -97,3 +97,38 @@
 .undone {
   text-decoration: line-through;
 }
+
+
+
+
+
+
+
+.custom_form{
+      margin: 4px;
+      padding: 10px;
+      background-color: var(--background-color);
+      color: var(--color);
+      transition: color .4s;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      input{
+        color: green;
+      }
+}
+
+
+
+
+.letter_animator{
+      margin: 4px;
+      width: fit-content;
+      padding: 10px;
+      background: linear-gradient(90deg, #f79533 0% 25%, #ef4e7b 50%, #a166ab 75%, #5073b8 100%);
+      background-clip: text;
+      color: transparent;
+      transition: color .4s;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      
+}
